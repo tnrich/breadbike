@@ -6,13 +6,12 @@ export function createSpreadsheets(dataArray) {
   console.log(`dataArray:`, dataArray);
   dataArray.forEach((d) => {
     const { route } = d;
-
+    if (!route) return console.log("No route found for data: ", d);
     if (!spreadsheetsByRoute[route]) spreadsheetsByRoute[route] = [];
     spreadsheetsByRoute[route].push(d);
   });
 
   forEach(spreadsheetsByRoute, (data, key) => {
-    console.log(`data:`, data);
     if (!key) return console.log("No key found for data: ", data);
 
     createRoadWarriorExcel(data, key);
@@ -20,6 +19,7 @@ export function createSpreadsheets(dataArray) {
 }
 
 function createRoadWarriorExcel(data, name) {
+  console.log(`name:`, name);
   const prettyData = flatMap(data, prettifyRoadWarrior);
   var wb = window.XLSX.utils.book_new();
   const ws = window.XLSX.utils.json_to_sheet(prettyData);
@@ -63,10 +63,7 @@ function prettifyRoadWarrior(d) {
       zipCode,
     } = d;
 
-    var {
-      number,
-      street,
-    } = parseAddress.parseLocation(address);
+    var { number, street } = parseAddress.parseLocation(address);
 
     return {
       Name: firstName + " " + lastName,
