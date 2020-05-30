@@ -9,6 +9,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <button onClick={createSpreadsheets}>click me</button>
         Drag your distribution csv here:
         <input
           className={"fileInput"}
