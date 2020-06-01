@@ -143,7 +143,7 @@ function createRoadWarriorExcel(data, name) {
 // state: "CA"
 // zipCode: "93401"
 const itemMap = {
-  "Baker's Choice Rustic Loaf": "Rustic,
+  "Baker's Choice Rustic Loaf": "Rustic",
   "Baker's Choice Pan Loaf": "Pan",
   "The Rye Loaf": "Rye",
 }
