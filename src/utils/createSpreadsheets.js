@@ -2,14 +2,15 @@ import { forEach, flatMap } from "lodash";
 import parseAddress from "parse-address";
 
 export function createSpreadsheets(dataArray) {
-  // const spreadsheetsByRoute = {};
-  // console.log(`dataArray:`, dataArray);
-  // dataArray.forEach((d) => {
-  //   const { route } = d;
-  //   if (!route) return console.log("No route found for data: ", d);
-  //   if (!spreadsheetsByRoute[route]) spreadsheetsByRoute[route] = [];
-  //   spreadsheetsByRoute[route].push(d);
-  // });
+
+  const spreadsheetsByRoute = {};
+  console.log(`dataArray:`, dataArray);
+  dataArray.forEach((d) => {
+    const { route } = d;
+    if (!route) return console.log("No route found for data: ", d);
+    if (!spreadsheetsByRoute[route]) spreadsheetsByRoute[route] = [];
+    spreadsheetsByRoute[route].push(d);
+  });
 
 //   var data = JSON.stringify({"Name":"A New Route","StartTime":"2020-05-14T04:03:03.2838573Z","StopTime":"2020-05-14T05:03:03.2838573Z","HardStart":true,"HardStop":false,"Stops":[{"Name":"My new location","Address":"123 Main Street, New York","Lat":33.274,"Lng":33.927,"ServiceTime":5,"Note":"A note goes here","Email":"me@email.com","Phone":"555-555-5555"},{"Name":"Another new location","Address":"1025 31st Street, New York","Lat":33.323,"Lng":33.672,"ServiceTime":5,"Note":"A note goes here","Email":"someone@email.com","Phone":"555-555-4444","ScheduleId":null}],"OptType":2,"Note":"Test Note","TravelMode":0,"Driver":"driver@domain","IsRoundTrip":false});
 
@@ -28,23 +29,23 @@ export function createSpreadsheets(dataArray) {
 
 // xhr.send(data);
 
-var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Cookie", "ARRAffinity=2440fd1f13ba23f6760a8ec999db8c302b1fd8bd292921f166842cfad5e92165");
+// var myHeaders = new Headers();
+// myHeaders.append("Content-Type", "application/json");
+// myHeaders.append("Cookie", "ARRAffinity=2440fd1f13ba23f6760a8ec999db8c302b1fd8bd292921f166842cfad5e92165");
 
-var raw = JSON.stringify({"Name":"A New Route","StartTime":"2020-05-14T04:03:03.2838573Z","StopTime":"2020-05-14T05:03:03.2838573Z","HardStart":true,"HardStop":false,"Stops":[{"Name":"My new location","Address":"123 Main Street, New York","Lat":33.274,"Lng":33.927,"ServiceTime":5,"Note":"A note goes here","Email":"me@email.com","Phone":"555-555-5555"},{"Name":"Another new location","Address":"1025 31st Street, New York","Lat":33.323,"Lng":33.672,"ServiceTime":5,"Note":"A note goes here","Email":"someone@email.com","Phone":"555-555-4444","ScheduleId":null}],"OptType":2,"Note":"Test Note","TravelMode":0,"Driver":"driver@domain","IsRoundTrip":false});
+// var raw = JSON.stringify({"Name":"A New Route","StartTime":"2020-05-14T04:03:03.2838573Z","StopTime":"2020-05-14T05:03:03.2838573Z","HardStart":true,"HardStop":false,"Stops":[{"Name":"My new location","Address":"123 Main Street, New York","Lat":33.274,"Lng":33.927,"ServiceTime":5,"Note":"A note goes here","Email":"me@email.com","Phone":"555-555-5555"},{"Name":"Another new location","Address":"1025 31st Street, New York","Lat":33.323,"Lng":33.672,"ServiceTime":5,"Note":"A note goes here","Email":"someone@email.com","Phone":"555-555-4444","ScheduleId":null}],"OptType":2,"Note":"Test Note","TravelMode":0,"Driver":"driver@domain","IsRoundTrip":false});
 
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow'
-};
+// var requestOptions = {
+//   method: 'POST',
+//   headers: myHeaders,
+//   body: raw,
+//   redirect: 'follow'
+// };
 
-fetch("https://teamapi.roadwarrior.app/api/Route/Add?token=Ue-obZyeBxKfPFVj7zsRgCb-IN7UtqJv&accountid=5cb4df78-e19f-47b7-a7b1-5440403a5855", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+// fetch("https://teamapi.roadwarrior.app/api/Route/Add?token=Ue-obZyeBxKfPFVj7zsRgCb-IN7UtqJv&accountid=5cb4df78-e19f-47b7-a7b1-5440403a5855", requestOptions)
+//   .then(response => response.text())
+//   .then(result => console.log(result))
+//   .catch(error => console.log('error', error));
 
 
 // var geocoder = new google.maps.Geocoder();
@@ -108,23 +109,23 @@ fetch("https://teamapi.roadwarrior.app/api/Route/Add?token=Ue-obZyeBxKfPFVj7zsRg
   //   }
   // );
 
-  // forEach(spreadsheetsByRoute, (data, key) => {
-  //   if (!key) return console.log("No key found for data: ", data);
+  forEach(spreadsheetsByRoute, (data, key) => {
+    if (!key) return console.log("No key found for data: ", data);
 
-  //   createRoadWarriorExcel(data, key);
-  // });
+    createRoadWarriorExcel(data, key);
+  });
 }
 
 function createRoadWarriorExcel(data, name) {
   console.log(`name:`, name);
   const prettyData = flatMap(data, prettifyRoadWarrior);
-  var wb = window.XLSX.utils.book_new();
-  const ws = window.XLSX.utils.json_to_sheet(prettyData);
-  var ws_name = "Uploads";
+  // var wb = window.XLSX.utils.book_new();
+  // const ws = window.XLSX.utils.json_to_sheet(prettyData);
+  // var ws_name = "Uploads";
 
-  /* Add the worksheet to the workbook */
-  window.XLSX.utils.book_append_sheet(wb, ws, ws_name);
-  window.XLSX.writeFile(wb, `${name}_out.xlsx`);
+  // /* Add the worksheet to the workbook */
+  // window.XLSX.utils.book_append_sheet(wb, ws, ws_name);
+  // window.XLSX.writeFile(wb, `${name}_out.xlsx`);
 }
 
 // "": ""
@@ -141,6 +142,11 @@ function createRoadWarriorExcel(data, name) {
 // secondaryPhone: ""
 // state: "CA"
 // zipCode: "93401"
+const itemMap = {
+  "Baker's Choice Rustic Loaf": "Rustic,
+  "Baker's Choice Pan Loaf": "Pan",
+  "The Rye Loaf": "Rye",
+}
 
 function prettifyRoadWarrior(d) {
   try {
@@ -159,6 +165,41 @@ function prettifyRoadWarrior(d) {
       state,
       zipCode,
     } = d;
+    const orderDescription = ""
+
+    let quantity
+    Object.keys(d).forEach((key) => {
+      if(key.startsWith("noHeader__")) {
+        const item = d[key]
+        
+        if (item) {
+          const index = Number(key.replace("noHeader__", "").trim())
+          if (index % 3  === 0) {
+            quantity = item || ""
+          }
+          //skip index % 3  === 1 because that is the "unit" we don't need
+          if (index % 3  === 2) {
+            if (item.includes("Biker's Tip")) {return }
+            orderDescription += quantity + (itemMap[item ] || item.replace("Stepladder Creamery","").replace("Leigh's Bakeshop", "")).trim() + " "
+          }
+
+        }
+      }
+    })
+
+    
+    // Change "Baker's Choice Rustic Loaf" to "Rustic", 
+    // Change "Baker's Choice Pan Loaf" to "Pan", 
+    // change "The Rye Loaf" to "Rye", 
+    // Remove "Stepladder Creamery" from both cheese names, 
+    // Remove "Leigh's Bakeshop" from both cookie names. 
+    // Do not include any "Biker's Tip" orders. 
+    // Do not include the "units". 
+    // So an order (as read in a distribution row) for 
+    // " 1 | loaf | Baker's Choice Rustic Loaf | 2 | 2.0 Cookie(s) | Leigh's Bakeshop Dark Chocolate Chunk Cookie | 1 | Jar | Stepladder Creamery Marinated Fromage Blanc | 1 | share | Biker's Tip" 
+    // would read in the note as 
+    // "1 Rustic, 2 Dark Chocolate Chunk Cookie, 1 Marinated Fromage Blanc"
+
 
     if (address === "1640 El Cerrito Ct") {
       debugger;

@@ -4,7 +4,6 @@ import "./App.css";
 import { createSpreadsheets } from "./utils/createSpreadsheets";
 import { camelCase } from "lodash";
 
-
 function App() {
   return (
     <div className="App">
@@ -16,14 +15,18 @@ function App() {
           onChange={function (event) {
             var fileList = document.querySelector(".fileInput").files;
             console.log(`fileList:`, fileList);
+            let i = 0;
             Papa.parse(fileList[0], {
               header: true,
-              transformHeader: camelCase,
-              complete: function(results) {
+              transformHeader: (header) => {
+                console.log(`header:`, header);
+                return header ? camelCase(header) : `noHeader__${i++}`;
+              },
+              complete: function (results) {
                 console.log("Finished:", results.data);
-                createSpreadsheets(results.data)
-              }
-            })
+                createSpreadsheets(results.data);
+              },
+            });
           }}
           type="file"
         ></input>
@@ -33,5 +36,3 @@ function App() {
 }
 
 export default App;
-
-
