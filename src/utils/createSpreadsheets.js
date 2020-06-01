@@ -165,7 +165,7 @@ function prettifyRoadWarrior(d) {
       state,
       zipCode,
     } = d;
-    const orderDescription = ""
+    let orderDescription = ""
 
     let quantity
     Object.keys(d).forEach((key) => {
@@ -186,6 +186,7 @@ function prettifyRoadWarrior(d) {
         }
       }
     })
+    console.log(`orderDescription:`,orderDescription)
 
     
     // Change "Baker's Choice Rustic Loaf" to "Rustic", 
