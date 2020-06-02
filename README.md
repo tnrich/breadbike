@@ -1,3 +1,14 @@
+# Breadbike
+The general idea is that we need to parse in Farmigo csvs (./Distribution-05_28_2020.csv) and parse it to a format that the RoadWarrior api can understand (https://teamapi.roadwarrior.app/Help/Api/POST-api-Route-Add)
+
+That requires getting a lat/long from google maps for the address' coming in. 
+
+And making a request to roadwarrior/route/add with the properly formatted json 
+
+To do this I've started setting up an azure serverless folder 
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
