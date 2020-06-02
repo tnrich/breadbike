@@ -1,5 +1,9 @@
 var request = require('request');
 
+import {Client, Status} from "@googlemaps/google-maps-services-js";
+const client = new Client({});
+
+
 
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 
@@ -8,6 +12,25 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     const name = (req.query.name || (req.body && req.body.name));
 
 
+        
+    client.geocode({
+        params: {
+            address: "123 some street SLO CA",
+            key: process.env.GOOGLE_MAPS_API_KEY,
+        },
+        timeout: 1000, // milliseconds
+    }).then((r) => {
+        if (r.data.status === Status.OK) {
+        console.log(r.data.results[0].geometry.location);
+        } else {
+        console.log(r.data.error_message);
+        }
+    })
+    .catch((e) => {
+        console.log(e);
+    });
+    
+    
     var options = {
         'method': 'POST',
         'url': 'https://teamapi.roadwarrior.app/api/Route/Add?token=Ue-obZyeBxKfPFVj7zsRgCb-IN7UtqJv&accountid=5cb4df78-e19f-47b7-a7b1-5440403a5855',

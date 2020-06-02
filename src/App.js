@@ -1,14 +1,14 @@
 import React from "react";
 import Papa from "papaparse";
 import "./App.css";
-import { createSpreadsheets } from "./utils/createSpreadsheets";
+import { startRoadWarriorApiCall } from "./utils/startRoadWarriorApiCall";
 import { camelCase } from "lodash";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={createSpreadsheets}>click me</button>
+        <button onClick={startRoadWarriorApiCall}>click me</button>
         Drag your distribution csv here:
         <input
           className={"fileInput"}
@@ -24,7 +24,7 @@ function App() {
               },
               complete: function (results) {
                 console.log("Finished:", results.data);
-                createSpreadsheets(results.data);
+                startRoadWarriorApiCall(results.data);
               },
             });
           }}
