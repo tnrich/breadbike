@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Papa from "papaparse";
 import "./App.css";
 import { startRoadWarriorApiCall } from "./utils/startRoadWarriorApiCall";
 import { camelCase } from "lodash";
 
 function App() {
+  const [responses, setResponse] = useState([]);
+  // const [responseFailure, setResponseFailure] = useState()
+
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={startRoadWarriorApiCall}>click me</button>
         Drag your distribution csv here:
         <input
           className={"fileInput"}
@@ -24,12 +26,22 @@ function App() {
               },
               complete: function (results) {
                 console.log("Finished:", results.data);
-                startRoadWarriorApiCall(results.data);
+                startRoadWarriorApiCall(results.data, (response) => {
+                  setResponse([...responses, response]);
+                });
               },
             });
           }}
           type="file"
         ></input>
+        {responses.map(({ name, success, error, results }, i) => {
+          return (
+            <div key={i}>
+              {name} {success} {JSON.stringify(error, null, 2)}{" "}
+              {JSON.stringify(results, null, 2)}
+            </div>
+          );
+        })}
       </header>
     </div>
   );

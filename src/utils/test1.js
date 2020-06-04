@@ -112,3 +112,17 @@ request(options, function (error, response) {
   //     }),
   //   }
   // );
+
+
+
+  //then hit the google api to get the lat/long
+
+  //then hit the azure function
+
+  // var wb = window.XLSX.utils.book_new();
+  // const ws = window.XLSX.utils.json_to_sheet(prettyData);
+  // var ws_name = "Uploads";
+
+  // /* Add the worksheet to the workbook */
+  // window.XLSX.utils.book_append_sheet(wb, ws, ws_name);
+  // window.XLSX.writeFile(wb, `${name}_out.xlsx`);
