@@ -6,6 +6,7 @@ const client = new gmaps.Client({
     config: {},
 });
 
+// todo https://www.c-sharpcorner.com/article/handling-cors-in-azure-function/
 
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 
@@ -14,8 +15,8 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     try {
         context.log('HTTP trigger function processed a request.');
         const roadWarriorData = req.body.roadWarriorData
+        const name = req.body.name
         console.log(`roadWarriorData:`, roadWarriorData)
-        //TODO get actual csv json data into this function
         console.log(`process.env.ROAD_WARRIOR_TOKEN:`, process.env.ROAD_WARRIOR_TOKEN)
         console.log(`process.env.GOOGLE_MAPS_API_KEY:`, process.env.GOOGLE_MAPS_API_KEY)
         console.log(`process.env.ROAD_WARRIOR_ACCOUNT_ID:`, process.env.ROAD_WARRIOR_ACCOUNT_ID)
@@ -56,7 +57,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             },
             body: JSON.stringify({
 
-                "Name": new Date(),
+                "Name": name,
                 "HardStart": false,
                 "HardStop": false,
                 "Stops": roadWarriorData.map((i) => {
@@ -67,13 +68,13 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                         Phone: i.Phone,
                         Lat: i.Lat,
                         Lng: i.Lng,
-                        "ServiceTime": 5,
+                        "ServiceTime": 3,
                     }
                 }),
-                "OptType": 2, //TODO ask if we want fastest =2 or shortest =1 ?
+                "OptType": 2, 
                 "Note": "Test Note",
                 "TravelMode": 1,
-                "IsRoundTrip": false //TODO ask sam
+                "IsRoundTrip": true
 
             })
         };
@@ -85,7 +86,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 console.log(response.body);
                 context.res = {
                     // status: 200, /* Defaults to 200 */
-                    body: "Hello " + "body"
+                    body: "success!!!"
                 };
                 resolve()
             });

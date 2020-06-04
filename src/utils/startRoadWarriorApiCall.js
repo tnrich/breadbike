@@ -1,28 +1,43 @@
-import { forEach, flatMap } from "lodash";
+import { flatMap } from "lodash";
 // import parseAddress from "parse-address";
-
-export function startRoadWarriorApiCall(dataArray, setResponse) {
-  const spreadsheetsByRoute = {};
-  console.log(`dataArray:`, dataArray);
-  dataArray.forEach((d) => {
-    const { route } = d;
-    if (!route) return console.log("No route found for data: ", d);
-    if (!spreadsheetsByRoute[route]) spreadsheetsByRoute[route] = [];
-    spreadsheetsByRoute[route].push(d);
-  });
-
-  forEach(spreadsheetsByRoute, (data, key) => {
-    if (!key) return console.log("No key found for data: ", data);
-
-    uploadDataToApi({
-      data,
-      name: key,
-      setResponse,
+const debug = false;
+export async function startRoadWarriorApiCall(dataArray, setResponse) {
+  try {
+    const spreadsheetsByRoute = {};
+    debug && console.log(`dataArray:`, dataArray);
+    dataArray.forEach((d) => {
+      const { route } = d;
+      if (!route) return debug && console.log("No route found for data: ", d);
+      if (!spreadsheetsByRoute[route]) spreadsheetsByRoute[route] = [];
+      spreadsheetsByRoute[route].push(d);
     });
-  });
+    const responses = [];
+    for (const key of Object.keys(spreadsheetsByRoute)) {
+      const data = spreadsheetsByRoute[key];
+
+      if (!key || !key.toLowerCase)
+        return console.log("No key found for data: ", data);
+      if (key.includes("Home Delivery -")) {
+        //if it doesn't have the words "home delivery" in the route name, we won't include it
+
+        const res = await uploadDataToApi({
+          data,
+          name: key.replace("Home Delivery -", data[0]["deliveryDate"] || ""),
+        });
+        responses.push(res);
+      }
+    }
+    return responses;
+  } catch (error) {
+    console.log(`Upload failed error:`, error);
+    return {
+      error:
+        "The upload failed for some reason. Check the console for more info!",
+    };
+  }
 }
 
-function uploadDataToApi({ data, name, setResponse }) {
+async function uploadDataToApi({ data, name, setResponse }) {
   //we first need to prettify this data to get it ready for the roadwarrior api
   const dataForRoadwarriorApi = flatMap(data, prettifyRoadWarriorData);
   const isLocal = process.env.NODE_ENV !== "production";
@@ -36,6 +51,7 @@ function uploadDataToApi({ data, name, setResponse }) {
   myHeaders.append("Content-Type", "application/json");
 
   var raw = JSON.stringify({
+    name,
     roadWarriorData: dataForRoadwarriorApi,
   });
 
@@ -45,19 +61,19 @@ function uploadDataToApi({ data, name, setResponse }) {
     body: raw,
     redirect: "follow",
   };
-
   //hit the azure serverless function where we'll do additional google maps api calls for each roadwarrior
-  fetch(azureUrl, requestOptions)
+  return await fetch(azureUrl, requestOptions)
     .then((response) => response.text())
     .then((result) => {
-      setResponse({ success: true, name, result });
+      return { success: true, name, result };
     })
     .catch((error) => {
-      setResponse({
+      console.log(`error uploading!:`, error);
+      return {
         success: false,
         name,
         error,
-      });
+      };
     });
 }
 
@@ -72,19 +88,14 @@ function prettifyRoadWarriorData(d) {
     const {
       address,
       city,
-      // comments,
-      // deliveryDate,
       firstName,
       lastName,
-      location, //TODO what is the location for?
-      // modified,
       primaryPhone,
-      // route,
       secondaryPhone,
       state,
       zipCode,
     } = d;
-    console.log(`address:`, address);
+    debug && console.log(`address:`, address);
     let orderDescription = "";
 
     let quantity;
@@ -116,7 +127,7 @@ function prettifyRoadWarriorData(d) {
         }
       }
     });
-    console.log(`orderDescription:`, orderDescription);
+    debug && console.log(`orderDescription:`, orderDescription);
 
     return {
       Name: firstName + " " + lastName,
@@ -137,7 +148,7 @@ function prettifyRoadWarriorData(d) {
 // deliveryDate: "Thursday, May 28, 2020"
 // firstName: "Torrey"
 // lastName: "Sanseverino"
-// location: "Home Delivery - Torrey Sanseverino" //TODO what is the location for?
+// location: "Home Delivery - Torrey Sanseverino"
 // modified: "No"
 // primaryPhone: "(858) 722 3003"
 // route: "Home Delivery - Downtown (South of Marsh)"

@@ -8,6 +8,13 @@ And making a request to roadwarrior/route/add with the properly formatted json
 To do this I've started setting up an azure serverless folder 
 
 
+To run the azure serverless function locally, you can hit f5 to start debugging within vscode. 
+It requires that you have the local application settings keys downloaded from azure functions (ask thomas for those keys if you need them)
+
+
+
+
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
