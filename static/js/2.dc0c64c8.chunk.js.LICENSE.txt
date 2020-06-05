@@ -11,12 +11,6 @@ https://github.com/mholt/PapaParse
 License: MIT
 */
 
-/*!
- * XRegExp 3.2.0
- * <xregexp.com>
- * Steven Levithan (c) 2007-2017 MIT License
- */
-
 /**
  * @license
  * Lodash <https://lodash.com/>
