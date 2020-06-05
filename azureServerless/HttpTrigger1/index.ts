@@ -16,6 +16,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         context.log('HTTP trigger function processed a request.');
         const roadWarriorData = req.body.roadWarriorData
         const name = req.body.name
+        const itemCountsDescription = req.body.itemCountsDescription
         console.log(`roadWarriorData:`, roadWarriorData)
         console.log(`process.env.ROAD_WARRIOR_TOKEN:`, process.env.ROAD_WARRIOR_TOKEN)
         console.log(`process.env.GOOGLE_MAPS_API_KEY:`, process.env.GOOGLE_MAPS_API_KEY)
@@ -33,7 +34,6 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 .then((r) => {
                     if (r.data.status === gmaps.Status.OK) {
                         console.log(r.data.results[0].geometry.location);
-
                         item.Lat = r.data.results[0].geometry.location.lat
                         item.Lng = r.data.results[0].geometry.location.lng
                     } else {
@@ -56,10 +56,10 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-
                 "Name": name,
                 "HardStart": false,
                 "HardStop": false,
+                "Driver": "slobreadbike@gmail.com",
                 "Stops": roadWarriorData.map((i) => {
                     return {
                         Address: i.Address,
@@ -72,7 +72,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                     }
                 }),
                 "OptType": 2, 
-                "Note": "Test Note",
+                "Note": itemCountsDescription,
                 "TravelMode": 1,
                 "IsRoundTrip": true
 

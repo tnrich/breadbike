@@ -1,4 +1,4 @@
-import { flatMap } from "lodash";
+import { flatMap, forEach } from "lodash";
 // import parseAddress from "parse-address";
 const debug = false;
 export async function startRoadWarriorApiCall(dataArray, setResponse) {
@@ -22,8 +22,14 @@ export async function startRoadWarriorApiCall(dataArray, setResponse) {
 
         const res = await uploadDataToApi({
           data,
-          name: key.replace("Home Delivery -", data[0]["deliveryDate"] || ""),
+          name: key.replace(
+            "Home Delivery -",
+            (data[0]["deliveryDate"] &&
+              getMonthDayDate(data[0]["deliveryDate"])) ||
+              ""
+          ),
         });
+
         responses.push(res);
       }
     }
@@ -39,7 +45,11 @@ export async function startRoadWarriorApiCall(dataArray, setResponse) {
 
 async function uploadDataToApi({ data, name, setResponse }) {
   //we first need to prettify this data to get it ready for the roadwarrior api
-  const dataForRoadwarriorApi = flatMap(data, prettifyRoadWarriorData);
+  const { roadWarriorData, itemsByType } = prettifyRoadWarriorData(data);
+  let itemCountsDescription = "";
+  forEach(itemsByType, (quantity, type) => {
+    itemCountsDescription += `${quantity} ${type}, `;
+  });
   const isLocal = process.env.NODE_ENV !== "production";
 
   const azureUrl = isLocal
@@ -52,7 +62,8 @@ async function uploadDataToApi({ data, name, setResponse }) {
 
   var raw = JSON.stringify({
     name,
-    roadWarriorData: dataForRoadwarriorApi,
+    roadWarriorData,
+    itemCountsDescription,
   });
 
   var requestOptions = {
@@ -63,10 +74,21 @@ async function uploadDataToApi({ data, name, setResponse }) {
   };
   //hit the azure serverless function where we'll do additional google maps api calls for each roadwarrior
   return await fetch(azureUrl, requestOptions)
-    .then((response) => response.text())
-    .then((result) => {
-      return { success: true, name, result };
+    .then((response) => {
+      console.log(`response:`, response);
+      const result = response.text();
+      if (response.status !== 200) {
+        console.log(`error uploading. got a result.error!:`, result.statusText);
+        return {
+          success: false,
+          name,
+          error: result.statusText,
+        };
+      } else {
+        return { success: true, name, result };
+      }
     })
+
     .catch((error) => {
       console.log(`error uploading!:`, error);
       return {
@@ -83,62 +105,70 @@ const itemMap = {
   "The Rye Loaf": "Rye",
 };
 
-function prettifyRoadWarriorData(d) {
-  try {
-    const {
-      address,
-      city,
-      firstName,
-      lastName,
-      primaryPhone,
-      secondaryPhone,
-      state,
-      zipCode,
-    } = d;
-    debug && console.log(`address:`, address);
-    let orderDescription = "";
+function prettifyRoadWarriorData(data) {
+  const itemsByType = {};
+  const roadWarriorData = flatMap(data, (d) => {
+    try {
+      const {
+        address,
+        city,
+        firstName,
+        lastName,
+        primaryPhone,
+        secondaryPhone,
+        state,
+        zipCode,
+      } = d;
+      debug && console.log(`address:`, address);
+      let orderDescription = "";
 
-    let quantity;
-    Object.keys(d).forEach((key) => {
-      if (key.startsWith("noHeader__")) {
-        const item = d[key];
+      let quantity;
 
-        if (item) {
-          const index = Number(key.replace("noHeader__", "").trim());
-          if (index % 3 === 0) {
-            quantity = item || "";
-          }
-          //skip index % 3  === 1 because that is the "unit" we don't need
-          if (index % 3 === 2) {
-            if (item.includes("Biker's Tip")) {
-              return;
+      Object.keys(d).forEach((key) => {
+        if (key.startsWith("noHeader__")) {
+          const item = d[key];
+
+          if (item) {
+            const index = Number(key.replace("noHeader__", "").trim());
+            if (index % 3 === 0) {
+              quantity = item || "";
             }
-            orderDescription +=
-              quantity +
-              " " +
-              (
+            //skip index % 3  === 1 because that is the "unit" we don't need
+            if (index % 3 === 2) {
+              if (item.includes("Biker's Tip")) {
+                return;
+              }
+
+              const itemType = (
                 itemMap[item] ||
                 item
                   .replace("Stepladder Creamery", "")
                   .replace("Leigh's Bakeshop", "")
-              ).trim() +
-              " ";
+              ).trim();
+              itemsByType[itemType] =
+                Number(itemsByType[itemType] || 0) + Number(quantity);
+              orderDescription += quantity + " " + itemType + " ";
+            }
           }
         }
-      }
-    });
-    debug && console.log(`orderDescription:`, orderDescription);
+      });
+      debug && console.log(`orderDescription:`, orderDescription);
 
-    return {
-      Name: firstName + " " + lastName,
-      Address: `${address} ${city} ${state} ${zipCode}`,
-      Phone: primaryPhone || secondaryPhone,
-      Note: orderDescription,
-    };
-  } catch (e) {
-    console.log(`couldn't prettify :`, d);
-    return [];
-  }
+      return {
+        Name: firstName + " " + lastName,
+        Address: `${address} ${city} ${state} ${zipCode}`,
+        Phone: primaryPhone || secondaryPhone,
+        Note: orderDescription,
+      };
+    } catch (e) {
+      console.log(`couldn't prettify :`, d);
+      return [];
+    }
+  });
+  return {
+    itemsByType,
+    roadWarriorData,
+  };
 }
 
 // "": ""
@@ -167,3 +197,12 @@ function prettifyRoadWarriorData(d) {
 // " 1 | loaf | Baker's Choice Rustic Loaf | 2 | 2.0 Cookie(s) | Leigh's Bakeshop Dark Chocolate Chunk Cookie | 1 | Jar | Stepladder Creamery Marinated Fromage Blanc | 1 | share | Biker's Tip"
 // would read in the note as
 // "1 Rustic, 2 Dark Chocolate Chunk Cookie, 1 Marinated Fromage Blanc"
+
+function getMonthDayDate(d) {
+  const date = new Date(d);
+  return (
+    date.toLocaleString("default", { month: "long" }) +
+    " " +
+    (date.getDate() > 9 ? date.getDate() : "0" + date.getDate())
+  );
+}
