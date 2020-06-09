@@ -54,7 +54,7 @@ async function uploadDataToApi({ data, name, setResponse }) {
 
   const azureUrl = (isLocal)
     ? "http://localhost:7071/api/HttpTrigger1"
-    : "https://tnrich-breadbike.azurewebsites.net/api/HttpTrigger1";
+    : "https://tnrich-breadbike.azurewebsites.net/api/HttpTrigger1?code=mZhkt5Td4MFZG0fEtq5PdN4NJWI3UbgSLL6kh9h9BpKAYdzl24MakA%3D%3D";
 
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
