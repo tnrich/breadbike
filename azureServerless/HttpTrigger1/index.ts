@@ -71,7 +71,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                         "ServiceTime": 3,
                     }
                 }),
-                "OptType": 2, 
+                "OptType": 2,
                 "Note": itemCountsDescription,
                 "TravelMode": 1,
                 "IsRoundTrip": true
@@ -85,8 +85,8 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
 
                 console.log(response.body);
                 context.res = {
-                    // status: 200, /* Defaults to 200 */
-                    body: "success!!!"
+                    status: 202, /* Defaults to 200 */
+                    // body: "success"
                 };
                 resolve()
             });
@@ -94,9 +94,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     } catch (error) {
         context.res = {
             status: 500, /* Defaults to 200 */
-            body: {
-                error
-            }
+            body: error
         };
     }
 

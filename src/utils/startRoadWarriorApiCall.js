@@ -77,7 +77,7 @@ async function uploadDataToApi({ data, name, setResponse }) {
     .then((response) => {
       console.log(`response:`, response);
       const result = response.text();
-      if (response.status !== 200) {
+      if (response.status !== 202) {
         console.log(`error uploading. got a result.error!:`, result.statusText);
         return {
           success: false,
