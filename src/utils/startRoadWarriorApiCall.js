@@ -52,9 +52,9 @@ async function uploadDataToApi({ data, name, setResponse }) {
   });
   const isLocal = process.env.NODE_ENV !== "production";
 
-  const azureUrl = isLocal
+  const azureUrl = (isLocal)
     ? "http://localhost:7071/api/HttpTrigger1"
-    : "https://tnrich-breadbike.azurewebsites.net";
+    : "https://tnrich-breadbike.azurewebsites.net/api/HttpTrigger1";
 
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
