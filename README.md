@@ -52,3 +52,9 @@ This will redeploy the app to: https://tnrich.github.io/breadbike/
 ## Remember to commit your changes! 
 
 git commit -am "my informative message here" && git push
+
+
+## Sam todo: 
+ - move the breadbike repo to your account or to it's own organization 
+ - move the azure function to your account 
+ 
