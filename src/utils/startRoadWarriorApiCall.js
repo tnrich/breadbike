@@ -52,7 +52,7 @@ async function uploadDataToApi({ data, name, setResponse }) {
   });
   const isLocal = process.env.NODE_ENV !== "production";
 
-  const azureUrl = (isLocal)
+  const azureUrl = isLocal
     ? "http://localhost:7071/api/HttpTrigger1"
     : "https://tnrich-breadbike.azurewebsites.net/api/HttpTrigger1?code=mZhkt5Td4MFZG0fEtq5PdN4NJWI3UbgSLL6kh9h9BpKAYdzl24MakA%3D%3D";
 
@@ -103,6 +103,11 @@ const itemMap = {
   "Baker's Choice Rustic Loaf": "Rustic",
   "Baker's Choice Pan Loaf": "Pan",
   "The Rye Loaf": "Rye",
+  "Leigh's Bakeshop Dark Chocolate Chunk Cookies": "DCC Cookies",
+  "Leigh's Bakeshop Brownie Batter Cookies": "BB Cookies",
+  "California Country Loaf": "CA Loaf",
+  "Special Baguette Of The Week": "Sp Baguette",
+  "Stepladder Creamery Marinated Fromage Blanc": "Fromage Blanc",
 };
 
 function prettifyRoadWarriorData(data) {
@@ -153,7 +158,12 @@ function prettifyRoadWarriorData(data) {
         }
       });
       debug && console.log(`orderDescription:`, orderDescription);
-
+      if (!orderDescription) {
+        console.error(
+          "This customer didn't order anything (maybe they only added a tip)"
+        );
+        return [];
+      }
       return {
         Name: firstName + " " + lastName,
         Address: `${address} ${city} ${state} ${zipCode}`,

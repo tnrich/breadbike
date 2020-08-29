@@ -4,7 +4,7 @@ import "./App.css";
 import { startRoadWarriorApiCall } from "./utils/startRoadWarriorApiCall";
 import { camelCase } from "lodash";
 import logo from "./breadbike_logo_final.png";
-const debug = false;
+const debug = true;
 function App() {
   const [working, setworking] = useState(false);
   const [responses, setResponse] = useState([]);
@@ -14,7 +14,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img width={200} height={200} alt="breadbike logo" src={logo}></img>
-        <h3>Weclome to the breadbike route planner</h3>
+        <h3>Weclome to the breadbike route planner -- version 1.0</h3>
         <h5>Drag today's distribution.csv report from farmigo here: </h5>
 
         <br></br>
