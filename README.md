@@ -47,7 +47,7 @@ yarn deploy;
 This will redeploy the app to: https://tnrich.github.io/breadbike/
 
 ## Publishing code to azure: 
-... fill this out ...
+Click the azure functions side bar icon. Hit the blue "Deploy" arrow at the top and select "tnrich-breadbike"
 
 ## Remember to commit your changes! 
 
