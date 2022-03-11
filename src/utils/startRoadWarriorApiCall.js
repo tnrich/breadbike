@@ -3,36 +3,57 @@ import { flatMap, forEach } from "lodash";
 const debug = false;
 export async function startRoadWarriorApiCall(dataArray, setResponse) {
   try {
-    const spreadsheetsByRoute = {};
-    debug && console.log(`dataArray:`, dataArray);
+    //the new way where there is just one route:
+    const data = [];
     dataArray.forEach((d) => {
       const { route } = d;
       if (!route) return debug && console.log("No route found for data: ", d);
-      if (!spreadsheetsByRoute[route]) spreadsheetsByRoute[route] = [];
-      spreadsheetsByRoute[route].push(d);
+      //if it doesn't have the words "home delivery" in the route name, we won't include it
+      if (route.includes("Home Delivery -")) {
+        data.push(d);
+      }
     });
     const responses = [];
-    for (const key of Object.keys(spreadsheetsByRoute)) {
-      const data = spreadsheetsByRoute[key];
+    const name =
+      ((data[0]["deliveryDate"] && getMonthDayDate(data[0]["deliveryDate"])) ||
+        "") + " deliveries";
+    const res = await uploadDataToApi({
+      data,
+      name,
+    });
+    responses.push(res);
 
-      if (!key || !key.toLowerCase)
-        return console.log("No key found for data: ", data);
-      if (key.includes("Home Delivery -")) {
-        //if it doesn't have the words "home delivery" in the route name, we won't include it
+    //the old way where there were multiple different
+    // const spreadsheetsByRoute = {};
+    // debug && console.log(`dataArray:`, dataArray);
+    // dataArray.forEach((d) => {
+    //   const { route } = d;
+    //   if (!route) return debug && console.log("No route found for data: ", d);
+    //   if (!spreadsheetsByRoute[route]) spreadsheetsByRoute[route] = [];
+    //   spreadsheetsByRoute[route].push(d);
+    // });
+    // const responses = [];
+    // for (const key of Object.keys(spreadsheetsByRoute)) {
+    //   const data = spreadsheetsByRoute[key];
 
-        const res = await uploadDataToApi({
-          data,
-          name: key.replace(
-            "Home Delivery -",
-            (data[0]["deliveryDate"] &&
-              getMonthDayDate(data[0]["deliveryDate"])) ||
-              ""
-          ),
-        });
+    //   if (!key || !key.toLowerCase)
+    //     return console.log("No key found for data: ", data);
+    //   if (key.includes("Home Delivery -")) {
+    //     //if it doesn't have the words "home delivery" in the route name, we won't include it
 
-        responses.push(res);
-      }
-    }
+    //     const res = await uploadDataToApi({
+    //       data,
+    //       name: key.replace(
+    //         "Home Delivery -",
+    //         (data[0]["deliveryDate"] &&
+    //           getMonthDayDate(data[0]["deliveryDate"])) ||
+    //           ""
+    //       ),
+    //     });
+
+    //     responses.push(res);
+    //   }
+    // }
     return responses;
   } catch (error) {
     console.log(`Upload failed error:`, error);
@@ -65,7 +86,6 @@ async function uploadDataToApi({ data, name, setResponse }) {
     roadWarriorData,
     itemCountsDescription,
   });
-
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
@@ -102,6 +122,7 @@ async function uploadDataToApi({ data, name, setResponse }) {
 const itemMap = {
   "Baker's Choice Rustic Loaf": "Rustic",
   "Baker's Choice Pan Loaf": "Pan",
+  "Cacti Coffee Whole Bean Specialty Coffee": "Cacti Coffee",
   "The Rye Loaf": "Rye",
   "Leigh's Bakeshop Dark Chocolate Chunk Cookies": "DCC Cookies",
   "Leigh's Bakeshop Brownie Batter Cookies": "BB Cookies",
