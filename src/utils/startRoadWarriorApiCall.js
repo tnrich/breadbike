@@ -185,6 +185,11 @@ function prettifyRoadWarriorData(data) {
         );
         return [];
       }
+      orderDescription += d.pickupSiteInstructions
+        ? `
+${d.pickupSiteInstructions}
+      `
+        : "";
       return {
         Name: firstName + " " + lastName,
         Address: `${address} ${city} ${state} ${zipCode}`,
