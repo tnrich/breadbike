@@ -14,7 +14,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img width={200} height={200} alt="breadbike logo" src={logo}></img>
-        <h3>Weclome to the breadbike route planner -- version 1.1</h3>
+        <h3>Weclome to the breadbike route planner -- version 1.2</h3>
         <h5>Drag today's distribution.csv report from farmigo here: </h5>
 
         <br></br>

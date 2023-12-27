@@ -1,3 +1,5 @@
+import { toPairs } from "lodash";
+import { sortBy } from "lodash";
 import { flatMap, forEach } from "lodash";
 // import parseAddress from "parse-address";
 const debug = false;
@@ -64,13 +66,30 @@ export async function startRoadWarriorApiCall(dataArray, setResponse) {
   }
 }
 
+
 async function uploadDataToApi({ data, name, setResponse }) {
   //we first need to prettify this data to get it ready for the roadwarrior api
   const { roadWarriorData, itemsByType } = prettifyRoadWarriorData(data);
   let itemCountsDescription = "";
-  forEach(itemsByType, (quantity, type) => {
-    itemCountsDescription += `${quantity} ${type}, `;
-  });
+  forEach(
+    // sort loaves/baguettes to the front
+    sortBy(toPairs(itemsByType), ([type, quantity]) => {
+      return type.includes("Loaf")
+        ? -5
+        : type.includes("Baguette")
+        ? -4
+        : type.includes("Cookie")
+        ? -3
+        : type.includes("Coffee")
+        ? -2
+        : type.includes("Fromage Blanc")
+        ? -1
+        : 0;
+    }),
+    ([type, quantity]) => {
+      itemCountsDescription += `${quantity} ${type}, `;
+    }
+  );
   const isLocal = process.env.NODE_ENV !== "production";
 
   const azureUrl = isLocal
