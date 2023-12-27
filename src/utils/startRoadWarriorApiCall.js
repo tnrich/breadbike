@@ -74,17 +74,22 @@ async function uploadDataToApi({ data, name, setResponse }) {
   forEach(
     // sort loaves/baguettes to the front
     sortBy(toPairs(itemsByType), ([type, quantity]) => {
-      return type.includes("Loaf")
-        ? -5
-        : type.includes("Baguette")
-        ? -4
-        : type.includes("Cookie")
-        ? -3
-        : type.includes("Coffee")
-        ? -2
-        : type.includes("Fromage Blanc")
-        ? -1
-        : 0;
+      const typeLower = type.toLowerCase();
+      return typeLower.includes("loaf")
+        ? -50
+        : typeLower.includes("baguette")
+        ? -40
+        : typeLower.includes("pretzel")
+        ? -30
+        : typeLower.includes("scone")
+        ? -20
+        : typeLower.includes("cookie")
+        ? -10
+        : typeLower.includes("coffee")
+        ? -0
+        : typeLower.includes("fromage blanc")
+        ? 10
+        : 20;
     }),
     ([type, quantity]) => {
       itemCountsDescription += `${quantity} ${type}, `;
