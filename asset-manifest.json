@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/breadbike/static/css/main.39b544b0.chunk.css",
-    "main.js": "/breadbike/static/js/main.e971058a.chunk.js",
-    "main.js.map": "/breadbike/static/js/main.e971058a.chunk.js.map",
+    "main.js": "/breadbike/static/js/main.caae42a6.chunk.js",
+    "main.js.map": "/breadbike/static/js/main.caae42a6.chunk.js.map",
     "runtime-main.js": "/breadbike/static/js/runtime-main.19c51458.js",
     "runtime-main.js.map": "/breadbike/static/js/runtime-main.19c51458.js.map",
     "static/js/2.606d49c2.chunk.js": "/breadbike/static/js/2.606d49c2.chunk.js",
     "static/js/2.606d49c2.chunk.js.map": "/breadbike/static/js/2.606d49c2.chunk.js.map",
     "index.html": "/breadbike/index.html",
-    "precache-manifest.48860e8d52cba2b35f55b8e3efd74003.js": "/breadbike/precache-manifest.48860e8d52cba2b35f55b8e3efd74003.js",
+    "precache-manifest.a97dda81a0e099115708cd91ed885e26.js": "/breadbike/precache-manifest.a97dda81a0e099115708cd91ed885e26.js",
     "service-worker.js": "/breadbike/service-worker.js",
     "static/css/main.39b544b0.chunk.css.map": "/breadbike/static/css/main.39b544b0.chunk.css.map",
     "static/js/2.606d49c2.chunk.js.LICENSE.txt": "/breadbike/static/js/2.606d49c2.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.19c51458.js",
     "static/js/2.606d49c2.chunk.js",
     "static/css/main.39b544b0.chunk.css",
-    "static/js/main.e971058a.chunk.js"
+    "static/js/main.caae42a6.chunk.js"
   ]
 }
