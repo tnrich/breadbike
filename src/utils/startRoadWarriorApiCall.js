@@ -66,7 +66,6 @@ export async function startRoadWarriorApiCall(dataArray, setResponse) {
   }
 }
 
-
 async function uploadDataToApi({ data, name, setResponse }) {
   //we first need to prettify this data to get it ready for the roadwarrior api
   const { roadWarriorData, itemsByType } = prettifyRoadWarriorData(data);
@@ -75,7 +74,13 @@ async function uploadDataToApi({ data, name, setResponse }) {
     // sort loaves/baguettes to the front
     sortBy(toPairs(itemsByType), ([type, quantity]) => {
       const typeLower = type.toLowerCase();
-      return typeLower.includes("loaf")
+      return typeLower.includes("seeded loaf")
+        ? -80
+        : typeLower.includes("ca loaf")
+        ? -70
+        : typeLower.includes("olive + herbs loaf")
+        ? -60
+        : typeLower.includes("loaf")
         ? -50
         : typeLower.includes("baguette")
         ? -40
