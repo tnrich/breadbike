@@ -153,6 +153,7 @@ const itemMap = {
   "Baker's Choice Pan Loaf": "Pan",
   "Cacti Coffee Whole Bean Specialty Coffee": "Cacti Coffee",
   "The Rye Loaf": "Rye",
+  "Chocolate Chip Cookie": "Chocolate Chip (2 per bag) Cookie",
   "Leigh's Bakeshop Dark Chocolate Chunk Cookies": "DCC Cookies",
   "Leigh's Bakeshop Brownie Batter Cookies": "BB Cookies",
   "California Country Loaf": "CA Loaf",
@@ -182,7 +183,6 @@ function prettifyRoadWarriorData(data) {
       Object.keys(d).forEach((key) => {
         if (key.startsWith("noHeader__")) {
           const item = d[key];
-
           if (item) {
             const index = Number(key.replace("noHeader__", "").trim());
             if (index % 3 === 0) {
