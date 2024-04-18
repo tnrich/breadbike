@@ -123,15 +123,15 @@ async function uploadDataToApi({ data, name, setResponse }) {
   };
   //hit the azure serverless function where we'll do additional google maps api calls for each roadwarrior
   return await fetch(azureUrl, requestOptions)
-    .then((response) => {
+    .then(async (response) => {
       console.log(`response:`, response);
-      const result = response.text();
+      const result = await response.text();
       if (response.status !== 202) {
-        console.log(`error uploading. got a result.error!:`, result.statusText);
+        console.log(`error uploading. got a result.error!:`, result);
         return {
           success: false,
           name,
-          error: result.statusText,
+          error: result,
         };
       } else {
         return { success: true, name, result };

@@ -37,13 +37,11 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                         item.Lat = r.data.results[0].geometry.location.lat
                         item.Lng = r.data.results[0].geometry.location.lng
                     } else {
+                        const e = new Error(`Google api failed to get the lat/lng for ${item.Name} ${item.Address}`)
+                        console.log(e.message);
                         throw new Error(`Google api failed to get the lat/lng for ${item.Name} ${item.Address}`)
-                        console.log(r.data.error_message);
                     }
                 })
-                .catch((e) => {
-                    console.log(e);
-                });
         }
 
 
@@ -93,8 +91,8 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         })
     } catch (error) {
         context.res = {
-            status: 500, /* Defaults to 200 */
-            body: error
+            status: 200, /* Defaults to 200 */
+            body: error.message
         };
     }
 

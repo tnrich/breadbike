@@ -14,7 +14,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img width={200} height={200} alt="breadbike logo" src={logo}></img>
-        <h3>Weclome to the breadbike route planner -- version 1.2</h3>
+        <h3>Weclome to the breadbike route planner -- version 1.4</h3>
         <h5>Drag today's distribution.csv report from farmigo here: </h5>
 
         <br></br>
@@ -45,7 +45,11 @@ function App() {
         <br></br>
         {working && <div class="loader"></div>}
         {!!responses.length && <h3>Results:</h3>}
-        {responses.map(({ name, success, error, results }, i) => {
+        {responses.map(({ name, success, error, result }, i) => {
+          console.info("name", name);
+          console.info("success", success);
+          console.info("error", error);
+          console.info("result", result);
           return (
             <div key={i}>
               {name} &nbsp;&nbsp;{" "}
@@ -60,7 +64,7 @@ function App() {
                 : success
                 ? ""
                 : "Undetermined error, check the logs"}{" "}
-              {results && JSON.stringify(results, null, 2)}
+              {result && JSON.stringify(result, null, 2)}
               <br></br>
               <br></br>
             </div>
