@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "79adf1941a2a6fff04ceb7dc7db88e06",
+    "revision": "d62150f4b1668b18c633eda767117234",
     "url": "/breadbike/index.html"
   },
   {
-    "revision": "2239059c0c14452dcc9f",
+    "revision": "053d9ebf83421bc60baa",
     "url": "/breadbike/static/css/main.39b544b0.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/breadbike/static/js/2.606d49c2.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "2239059c0c14452dcc9f",
-    "url": "/breadbike/static/js/main.2d2ae263.chunk.js"
+    "revision": "053d9ebf83421bc60baa",
+    "url": "/breadbike/static/js/main.106f87f8.chunk.js"
   },
   {
     "revision": "bb42440def5e0eff1439",
