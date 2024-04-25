@@ -190,7 +190,7 @@ function prettifyRoadWarriorData(data) {
             }
             //skip index % 3  === 1 because that is the "unit" we don't need
             if (index % 3 === 2) {
-              if (item.includes("Biker's Tip")) {
+              if (item.includes("Biker and Bakers Tip")) {
                 return;
               }
 
@@ -256,10 +256,10 @@ ${d.pickupSiteInstructions}
 // change "The Rye Loaf" to "Rye",
 // Remove "Stepladder Creamery" from both cheese names,
 // Remove "Leigh's Bakeshop" from both cookie names.
-// Do not include any "Biker's Tip" orders.
+// Do not include any "Biker and Bakers Tip" orders.
 // Do not include the "units".
 // So an order (as read in a distribution row) for
-// " 1 | loaf | Baker's Choice Rustic Loaf | 2 | 2.0 Cookie(s) | Leigh's Bakeshop Dark Chocolate Chunk Cookie | 1 | Jar | Stepladder Creamery Marinated Fromage Blanc | 1 | share | Biker's Tip"
+// " 1 | loaf | Baker's Choice Rustic Loaf | 2 | 2.0 Cookie(s) | Leigh's Bakeshop Dark Chocolate Chunk Cookie | 1 | Jar | Stepladder Creamery Marinated Fromage Blanc | 1 | share | Biker and Bakers Tip"
 // would read in the note as
 // "1 Rustic, 2 Dark Chocolate Chunk Cookie, 1 Marinated Fromage Blanc"
 
