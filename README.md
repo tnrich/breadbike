@@ -20,8 +20,16 @@ The azure function code lives in /azureServerless/HttpTrigger1
 
 The secret keys live in azure portal under tnrich-breadbike/Settings/Configuration 
 You can login to the azure portal here: 
-portal.azure.com
 
+https://portal.azure.com/#home
+
+trich1230@gmail.com // my secret pass
+
+## To update the road warrior api keys: 
+Login to the azure portal above
+Go to tnrich-breadbike
+Go to Settings/Environment Variables
+Update the ROAD_WARRIOR_ACCOUNT_ID and ROAD_WARRIOR_TOKEN values
 
 ## Running azure locally:
 To run the azure serverless function locally, you can hit f5 to start debugging within vscode. 
