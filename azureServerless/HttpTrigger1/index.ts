@@ -81,7 +81,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             request(options, function (error, response) {
                 if (error) throw new Error(`Road warrior API failed with error: ${error}`);
 
-                console.log(response.body);
+                context.log(response.body);
                 context.res = {
                     status: 202, /* Defaults to 200 */
                     // body: "success"

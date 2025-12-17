@@ -31,6 +31,8 @@ Go to tnrich-breadbike
 Go to Settings/Environment Variables
 Update the ROAD_WARRIOR_ACCOUNT_ID and ROAD_WARRIOR_TOKEN values
 
+Follow the steps for "## Publishing code to azure:" below to redeploy the function with the new keys. 
+
 ## Running azure locally:
 To run the azure serverless function locally, you can hit f5 to start debugging within vscode. 
 It requires that you have the local application settings keys downloaded from azure functions (ask thomas for those keys if you need them)
@@ -55,7 +57,7 @@ yarn deploy;
 This will redeploy the app to: https://tnrich.github.io/breadbike/
 
 ## Publishing code to azure: 
-Click the azure functions side bar icon. Hit the blue "Deploy" arrow at the top and select "tnrich-breadbike"
+Click the azure functions side bar icon. Expand the Function App menu item. Right click the   "tnrich-breadbike" function app and select "Deploy to function app"
 
 ## Remember to commit your changes! 
 
