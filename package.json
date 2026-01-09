@@ -9,7 +9,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/lodash": "npm:@types/lodash-es",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "gh-pages": "^2.2.0",
     "lodash": "^4.17.15",
     "papaparse": "^5.2.0",
